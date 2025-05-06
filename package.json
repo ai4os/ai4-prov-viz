@@ -1,0 +1,26 @@
+{
+  "name": "ai4eosc-prov-ts-viz",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "local": "VITE_API_URL='http://localhost:8000' vite",
+    "dev": "VITE_API_URL='https://dev.ai4eosc.predictia.es' vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@tailwindcss/vite": "^4.0.17",
+    "@types/d3": "^7.4.3",
+    "d3": "^7.9.0",
+    "tailwindcss": "^4.0.17",
+    "tippy.js": "^6.3.7"
+  }
+}
