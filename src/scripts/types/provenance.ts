@@ -7,7 +7,8 @@ export namespace Backend {
 		id: string;
 		iri: string;
 		tag: string;
-		type: 'Entity' | 'Activity' | 'Agent';
+		type: 'Entity' | 'Activity' | 'Agent' | 'Collection';
+		starter: boolean
 		disabled: boolean
 		relations: Relations
 	}
@@ -29,4 +30,8 @@ export namespace Backend {
 // Parsed Provenance structured for frontend use
 export interface Provenance {
 	[key: string]: Backend.IRINode & { visibility: boolean };
+}
+
+export type ProvenaceDate = {
+	createdAt: string
 }

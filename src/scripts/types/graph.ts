@@ -30,7 +30,7 @@ export interface D3Node extends d3.SimulationNodeDatum, Backend.IRINode {
 }
 
 export interface IRINode extends D3Node {
-	type: 'Agent' | 'Activity' | 'Entity';
+	type: 'Agent' | 'Activity' | 'Entity' | 'Collection';
 }
 
 export interface ProvGraph {

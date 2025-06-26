@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-*: initial;
+  --font-mono: "Poppins", "sans-serif";
+  --font-sans: "Poppins", "sans-serif";
+  --color-chat: oklch(42.024% 0 none);
+  --color-chat-50: oklch(84.212% 0 none);
+  --color-chat-100: oklch(79.837% 0 none);
+  --color-chat-200: oklch(70.9% 0 none);
+  --color-chat-300: oklch(61.671% 0 none);
+  --color-chat-400: oklch(52.081% 0 none);
+  --color-chat-500: oklch(42.024% 0 none);
+  --color-chat-600: oklch(30.919% 0 none);
+  --color-chat-700: oklch(19.125% 0 none);
+  --color-chat-800: oklch(0% 0 none);
+  --color-chat-900: oklch(0% 0 none);
+  --color-chat-950: oklch(0% 0 none);
+}
+
+:root {
+  background-color: #f1e7e7;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.shadowed {
+  -webkit-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.25));
+}
+
+.details-downloader-button {
+  @apply bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded;
+  width: 3em;
+  height: 3em;
+}
+
+.customscrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.customscrollbar::-webkit-scrollbar-track {
+  @apply bg-slate-300;
+  border-radius: 4px;
+}
+
+.customscrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.customscrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

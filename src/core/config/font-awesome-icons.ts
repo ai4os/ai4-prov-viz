@@ -1,7 +1,7 @@
 import {
 	faChevronDown,
 	faTimes,
-	faFileArrowDown,
+	faFileArrowDown
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 

@@ -31,6 +31,9 @@ export const findProvIcon = (type: string, iri: string) => {
 		Entity: {
 			default: '/icons/defaultEntity.svg',
 		},
+		Collection: {
+			default: '/icons/defaultCollection.svg',
+		}
 	};
 	return icons[type][miniIRI(iri)!] ?? icons[type].default;
 };

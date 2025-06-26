@@ -1,26 +1,44 @@
 {
-  "name": "ai4eosc-prov-ts-viz",
+  "name": "react-version",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "local": "VITE_API_URL='http://localhost:8000' vite",
-    "dev": "VITE_API_URL='https://dev.ai4eosc.predictia.es' vite",
-    "build": "vite build",
+    "local": "VITE_BACKEND_URL='http://localhost:8080' VITE_LLM_URL='http://localhost:8000' vite",
+    "dev": "VITE_BACKEND_URL='https://dev.ai4eosc.predictia.es' VITE_LLM_URL='http://localhost:8000' vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
     "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@tailwindcss/vite": "^4.0.17",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tailwindcss/vite": "^4.1.10",
+    "@tippyjs/react": "^4.2.6",
     "@types/d3": "^7.4.3",
+    "clsx": "^2.1.1",
     "d3": "^7.9.0",
-    "tailwindcss": "^4.0.17",
-    "tippy.js": "^6.3.7"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.10",
+    "tippy.js": "^6.3.7",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5"
   }
 }
