@@ -6,7 +6,7 @@
   "scripts": {
     "local": "VITE_BACKEND_URL='http://localhost:8080' VITE_LLM_URL='http://localhost:8000' vite",
     "dev": "VITE_BACKEND_URL='https://dev.ai4eosc.predictia.es' VITE_LLM_URL='http://localhost:8000' vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
