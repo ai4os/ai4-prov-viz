@@ -1,7 +1,7 @@
 export const Api = {
   baseURL: import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000",
-  provGraph: "/prov-graph",
-  provDate: "/provenance-date",
+  provGraph: "/rdf-graph",
+  provDate: "/rdf-date",
   detailsMetadata: "/details-metadata",
 };
 
