@@ -2,7 +2,6 @@ FROM node:23-alpine3.20 AS frontbuilder
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
-ENV VITE_BACKEND_URL="http://localhost:8000"
 COPY . .
 RUN npm run build
 
