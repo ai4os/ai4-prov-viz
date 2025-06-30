@@ -1,5 +1,5 @@
 export const Api = {
-  baseURL: import.meta.env.VITE_BACKEND_URL ?? "http://localhost:80",
+  baseURL: import.meta.env.VITE_BACKEND_URL ?? "https://provenance.services.ai4os.eu",
   provGraph: "/rdf-graph",
   provDate: "/rdf-date",
   detailsMetadata: "/details-metadata",
