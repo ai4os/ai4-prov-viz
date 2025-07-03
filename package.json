@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "local": "VITE_BACKEND_URL='http://localhost:8080' VITE_LLM_URL='http://localhost:8000' vite",
-    "dev": "VITE_BACKEND_URL='https://dev.ai4eosc.predictia.es' VITE_LLM_URL='http://localhost:8000' vite",
+    "dev": "VITE_BACKEND_URL='https://provenance.services.ai4os.eu' VITE_LLM_URL='TBD' vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -20,6 +20,7 @@
     "@types/d3": "^7.4.3",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
+    "heap-js": "^2.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",

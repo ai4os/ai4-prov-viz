@@ -13,8 +13,13 @@ import {
 import Tippy from "@tippyjs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useGroupNodes } from "./hooks/useGroupNodes";
+import { Heap } from "heap-js";
+import type { ComparableNode } from "../utils/node-grouping";
 
 const ACCORDIONCOLORS = ["#0953CC", "#1E6FF5", "#629BF8"];
+const calcAccordionColor = (colorIndex: number) =>
+  ACCORDIONCOLORS[colorIndex % ACCORDIONCOLORS.length];
 
 export function ProvenanceDetailsPanel() {
   const { node, setNode } = useDetailsPanelStore();
@@ -144,6 +149,7 @@ interface LinkPanelProps extends ColorIndexed {
   nodes: Backend.ProvNode[];
 }
 const LinkPanel = ({ link, nodes, colorIndex }: LinkPanelProps) => {
+  const { isolated, grouped } = useGroupNodes(nodes);
   return (
     <div
       className={cn(
@@ -151,7 +157,7 @@ const LinkPanel = ({ link, nodes, colorIndex }: LinkPanelProps) => {
         "gap-1 p-2 rounded-md overflox-x-hidden text-white"
       )}
       style={{
-        backgroundColor: ACCORDIONCOLORS[colorIndex % ACCORDIONCOLORS.length],
+        backgroundColor: calcAccordionColor(colorIndex),
       }}
     >
       <Tippy content={link} placement="left" arrow>
@@ -174,7 +180,10 @@ const LinkPanel = ({ link, nodes, colorIndex }: LinkPanelProps) => {
           "pl-1 pt-[0.5em] pb-[0.5em] pe-[0.3em]"
         )}
       >
-        {nodes.map((n) => (
+        {Object.entries(grouped).map(([prefix, heap]) => (
+          <NodeHeapBlock prefix={prefix} heap={heap} colorIndex={colorIndex} />
+        ))}
+        {isolated.map((n) => (
           <NodeBlock key={n.id} node={n} colorIndex={colorIndex} />
         ))}
       </div>
@@ -182,6 +191,25 @@ const LinkPanel = ({ link, nodes, colorIndex }: LinkPanelProps) => {
   );
 };
 
+interface NodeHeapBlockProps extends ColorIndexed {
+  prefix: string;
+  heap: Heap<ComparableNode>;
+}
+const NodeHeapBlock = ({ prefix, heap, colorIndex }: NodeHeapBlockProps) => {
+  return (
+    <div className="flex flex-col gap-2 p-1 bg-slate-300">
+      <span className="font-mono text-sm">{prefix}</span>
+      <div
+        className="flex flex-col gap-1"
+        style={{ backgroundColor: calcAccordionColor(colorIndex) }}
+      >
+        {heap.toArray().map((node) => (
+          <NodeBlock key={node.id} node={node} colorIndex={colorIndex} />
+        ))}
+      </div>
+    </div>
+  );
+};
 interface NodeBlockProps extends ColorIndexed {
   node: Backend.ProvNode;
 }
