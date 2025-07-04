@@ -10,7 +10,7 @@ type GroupedNodes = {
 };
 
 export function groupNodes(nodes: Backend.ProvNode[]): GroupedNodes {
-  const groupRegex = /(\w+)-(\d+)/;
+  const groupRegex = /\(grouped\) (\w+)-(\d+|\w+)/;
   const heapComparator = (a: ComparableNode, b: ComparableNode) =>
     a.priority - b.priority;
 

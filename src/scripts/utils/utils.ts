@@ -1,5 +1,5 @@
 export const miniIRI = (iri: string) => {
-	return iri?.split('/').at(-1);
+	return iri.split('/').at(-1);
 };
 
 export const ruleToHReadable = (ontologyRule: string) : string => {

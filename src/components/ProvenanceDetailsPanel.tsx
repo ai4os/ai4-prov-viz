@@ -17,6 +17,7 @@ import { useGroupNodes } from "./hooks/useGroupNodes";
 import { Heap } from "heap-js";
 import type { ComparableNode } from "../utils/node-grouping";
 import { useAccordionTools } from "./hooks/useAccordionTools";
+import { orderNodeRelationsByTemplate } from "../utils/node-relations-ordering";
 
 const ACCORDIONCOLORS = ["#0953CC", "#1E6FF5", "#629BF8"];
 const calcAccordionColor = (colorIndex: number) =>
@@ -34,6 +35,8 @@ export function ProvenanceDetailsPanel() {
 
   const directForwardRelations = useMemo(() => {
     if (!node) return null;
+    const nodeRelations = getNodeToRelations(node);
+    const orderedRelations = orderNodeRelationsByTemplate(nodeRelations);
     return getNodeToRelations(node);
   }, [node]);
 
@@ -171,7 +174,7 @@ const LinkPanel = ({ link, nodes, colorIndex }: LinkPanelProps) => {
             "hover:text-blue-400 hover:cursor-pointer"
           )}
         >
-          {ruleToHReadable(miniIRI(link))}
+          {ruleToHReadable(miniIRI(link)!)}
         </a>
       </Tippy>
       <div
@@ -182,7 +185,7 @@ const LinkPanel = ({ link, nodes, colorIndex }: LinkPanelProps) => {
         )}
       >
         {Object.entries(grouped).map(([prefix, heap]) => (
-          <NodeHeapBlock prefix={prefix} heap={heap} colorIndex={colorIndex} />
+          <NodeHeapBlock key={prefix} prefix={prefix} heap={heap} colorIndex={colorIndex} />
         ))}
         {isolated.map((n) => (
           <NodeBlock key={n.id} node={n} colorIndex={colorIndex} />
@@ -199,20 +202,23 @@ interface NodeHeapBlockProps extends ColorIndexed {
 const NodeHeapBlock = ({ prefix, heap, colorIndex }: NodeHeapBlockProps) => {
   const { open, setOpen, twHeightClass } = useAccordionTools();
   return (
-    <div className="flex flex-col gap-2 p-1 bg-black rounded-sm ring-2 ring-white/50">
+    <div className="flex flex-col gap-2 p-1 bg-slate-900 rounded-sm ring-2 ring-white/50">
       <div className="flex flex-row pl-1 gap-1 items-center text-white">
-        <span className="font-mono text-sm">{prefix}</span>
+        <span className="font-mono text-sm">{`${prefix}s`}</span>
         <TriggerAccordionButton
           accordionOpen={open}
           setAccordionOpen={setOpen}
         />
       </div>
       <div
-        className={cn("flex flex-col gap-1 transition-all overflow-hidden", twHeightClass)}
+        className={cn(
+          "flex flex-col gap-1 transition-all overflow-hidden",
+          twHeightClass
+        )}
         style={{ backgroundColor: calcAccordionColor(colorIndex) }}
       >
         {heap.toArray().map((node) => (
-          <NodeBlock key={node.id} node={node} colorIndex={colorIndex} />
+          <NodeBlock key={node.id} node={node} colorIndex={colorIndex} grouped />
         ))}
       </div>
     </div>
@@ -221,8 +227,9 @@ const NodeHeapBlock = ({ prefix, heap, colorIndex }: NodeHeapBlockProps) => {
 
 interface NodeBlockProps extends ColorIndexed {
   node: Backend.ProvNode;
+  grouped?: boolean;
 }
-const NodeBlock = ({ node, colorIndex }: NodeBlockProps) => {
+const NodeBlock = ({ node, colorIndex, grouped = false }: NodeBlockProps) => {
   const { open, setOpen, twHeightClass } = useAccordionTools();
   if (node.type === "Literal") return <LiteralNodeBlock node={node} />;
 
@@ -254,7 +261,7 @@ const NodeBlock = ({ node, colorIndex }: NodeBlockProps) => {
               "hover:text-blue-500 cursor-default"
             )}
           >
-            {node.tag}
+            {grouped ? node.tag.replace("(grouped)", "") : node.tag}
           </a>
           {!isObjectEmpty(directForwardRelations) && (
             <TriggerAccordionButton
