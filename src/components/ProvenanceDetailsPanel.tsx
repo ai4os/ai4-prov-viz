@@ -16,6 +16,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useGroupNodes } from "./hooks/useGroupNodes";
 import { Heap } from "heap-js";
 import type { ComparableNode } from "../utils/node-grouping";
+import { useAccordionTools } from "./hooks/useAccordionTools";
 
 const ACCORDIONCOLORS = ["#0953CC", "#1E6FF5", "#629BF8"];
 const calcAccordionColor = (colorIndex: number) =>
@@ -196,11 +197,18 @@ interface NodeHeapBlockProps extends ColorIndexed {
   heap: Heap<ComparableNode>;
 }
 const NodeHeapBlock = ({ prefix, heap, colorIndex }: NodeHeapBlockProps) => {
+  const { open, setOpen, twHeightClass } = useAccordionTools();
   return (
-    <div className="flex flex-col gap-2 p-1 bg-slate-300">
-      <span className="font-mono text-sm">{prefix}</span>
+    <div className="flex flex-col gap-2 p-1 bg-black rounded-sm ring-2 ring-white/50">
+      <div className="flex flex-row pl-1 gap-1 items-center text-white">
+        <span className="font-mono text-sm">{prefix}</span>
+        <TriggerAccordionButton
+          accordionOpen={open}
+          setAccordionOpen={setOpen}
+        />
+      </div>
       <div
-        className="flex flex-col gap-1"
+        className={cn("flex flex-col gap-1 transition-all overflow-hidden", twHeightClass)}
         style={{ backgroundColor: calcAccordionColor(colorIndex) }}
       >
         {heap.toArray().map((node) => (
@@ -210,11 +218,12 @@ const NodeHeapBlock = ({ prefix, heap, colorIndex }: NodeHeapBlockProps) => {
     </div>
   );
 };
+
 interface NodeBlockProps extends ColorIndexed {
   node: Backend.ProvNode;
 }
 const NodeBlock = ({ node, colorIndex }: NodeBlockProps) => {
-  const [open, setOpen] = useState<boolean>();
+  const { open, setOpen, twHeightClass } = useAccordionTools();
   if (node.type === "Literal") return <LiteralNodeBlock node={node} />;
 
   // Otherwise it is an IRINode !
@@ -248,22 +257,10 @@ const NodeBlock = ({ node, colorIndex }: NodeBlockProps) => {
             {node.tag}
           </a>
           {!isObjectEmpty(directForwardRelations) && (
-            <button
-              type="button"
-              className={cn("transition-all", open && "rotate-90")}
-              style={{
-                cursor: "pointer",
-                background: "none",
-                border: "none",
-                padding: 0,
-              }}
-              aria-label="Open/Close the node children list"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <FontAwesomeIcon icon={["fas", "chevron-down"]} />
-            </button>
+            <TriggerAccordionButton
+              accordionOpen={open}
+              setAccordionOpen={setOpen}
+            />
           )}
         </div>
       </div>
@@ -271,7 +268,7 @@ const NodeBlock = ({ node, colorIndex }: NodeBlockProps) => {
         className={cn(
           "flex flex-col gap-2 max-h-0 overflow-hidden",
           "w-full transition-all duration-300",
-          open ? "max-h-screen" : "max-h-0"
+          twHeightClass
         )}
       >
         <LinkPanelList
@@ -295,5 +292,34 @@ const LiteralNodeBlock = ({ node }: { node: Backend.LiteralNode }) => {
     <div className="flex flex-row bg-white p-1 rounded-sm">
       <span className="font-sans text-base">{value}</span>
     </div>
+  );
+};
+
+interface TriggerAccordionButton {
+  accordionOpen: boolean;
+  setAccordionOpen(open: boolean): void;
+}
+
+const TriggerAccordionButton = ({
+  accordionOpen,
+  setAccordionOpen,
+}: TriggerAccordionButton) => {
+  return (
+    <button
+      type="button"
+      className={cn("transition-all", !accordionOpen && "rotate-90")}
+      style={{
+        cursor: "pointer",
+        background: "none",
+        border: "none",
+        padding: 0,
+      }}
+      aria-label="Open/Close the node children list"
+      onClick={() => {
+        setAccordionOpen(!accordionOpen);
+      }}
+    >
+      <FontAwesomeIcon icon={["fas", "chevron-down"]} />
+    </button>
   );
 };
