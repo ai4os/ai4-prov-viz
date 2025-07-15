@@ -106,12 +106,7 @@ function ChatContent({ history, lastResponse, loading }: ChatContentProps) {
   console.log(loading);
   return (
     <div className="flex flex-col text-md overflow-y-auto customscrollbar p-3 gap-2 w-full h-[85%] bg-chat-400 rounded-md">
-      <div className="flex flex-col w-full h-full justify-center items-center text-2xl text-white text-bold">
-        <span className="text-3xl font-bold">Provenance AIChat</span>
-         <span>is in progress...</span>
-        <span>Stay tuned!</span>
-      </div>
-      {/* {history.map((msg) => (
+      {history.map((msg) => (
         <div
           key={msg.content.slice(0, 20)}
           className={cn(
@@ -129,7 +124,7 @@ function ChatContent({ history, lastResponse, loading }: ChatContentProps) {
         className="flex flex-col w-fit justify-start text-white p-2"
       >
         {loading && "thinking..."}
-      </p> */}
+      </p>
     </div>
   );
 }
@@ -144,8 +139,7 @@ function ChatInput({ onSend }: ChatInputProps) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       if (prompt.trim() !== "") {
-        // Uncomment when chat will be enabled
-        //onSend(prompt);
+        onSend(prompt);
         setPrompt("");
       }
     }
