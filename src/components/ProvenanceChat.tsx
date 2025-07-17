@@ -110,7 +110,7 @@ function ChatContent({ history, lastResponse, loading }: ChatContentProps) {
         <div
           key={msg.content.slice(0, 20)}
           className={cn(
-            "flex flex-col w-fit",
+            "flex flex-col w-full",
             msg.type === "request"
               ? "rounded-2xl bg-slate-300 self-end p-3"
               : "justify-start text-white p-2"
