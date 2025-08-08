@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "local": "VITE_BACKEND_URL='http://localhost:8080' VITE_LLM_URL='http://localhost:8000' vite",
+    "localllm": "VITE_BACKEND_URL='https://provenance.services.ai4os.eu' VITE_LLM_URL='http://localhost:8000' vite",
     "dev": "VITE_BACKEND_URL='https://provenance.services.ai4os.eu' VITE_LLM_URL='TBD' vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -27,6 +28,7 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.10",
     "tippy.js": "^6.3.7",
+    "uuid": "^11.1.0",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

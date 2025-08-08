@@ -31,11 +31,12 @@ export class LLMService {
     let completeResponse = "";
     while (true) {
       const { value, done } = await reader.read();
+      
       if (done) break;
       const decodedValue = decoder.decode(value); // {stream: true} if its really streaming
-      const processedValue = JSON.parse(decodedValue);
-      completeResponse += processedValue;
-      render(processedValue);
+      console.log("decoded value: ", decodedValue)
+      completeResponse += decodedValue;
+      render(decodedValue);
     }
     return completeResponse;
   }

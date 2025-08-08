@@ -1,9 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "../utils/cn";
-import { useRef, useState, type Ref } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LLMService } from "../services/llm.service";
 import Markdown from "react-markdown";
+import { v4 as uuid } from "uuid";
+
 export function ProvenanceChatContainer() {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -31,19 +33,24 @@ type HistoryMessage = {
 function ProvenanceChat({ triggerChat }: ProvenaceChatProps) {
   const [history, setHistory] = useState<HistoryMessage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const currentResponseRef = useRef<HTMLParagraphElement>(null);
+  const loadingRef = useRef<boolean>(null);
+  const [lastResponse, setLastResponse] = useState<string>("");
 
-  const sendPrompt = (prompt: string) => {
-    const updateLastResponse = (delta: string) => {
-      if (!currentResponseRef.current) return;
-      console.log("se llama a updatelastResponse");
-      if (loading) {
-        console.log("loading a false");
-        currentResponseRef.current.innerHTML = "";
+  useEffect(() => {
+    loadingRef.current = loading;
+  }, [loading]);
+
+  const updateLastResponse = useCallback(
+    (delta: string) => {
+      if (loadingRef.current === true) {
         setLoading(false);
       }
-      currentResponseRef.current.innerHTML += delta;
-    };
+      setLastResponse((lr) => lr + delta);
+    },
+    [loading]
+  );
+
+  const sendPrompt = (prompt: string) => {
     const newChat: HistoryMessage[] = [
       ...history,
       { type: "request", content: prompt },
@@ -51,7 +58,7 @@ function ProvenanceChat({ triggerChat }: ProvenaceChatProps) {
     setHistory([...newChat]);
     setLoading(true);
     new LLMService().sendPrompt(prompt, updateLastResponse).then((r) => {
-      currentResponseRef.current!.innerHTML = "";
+      setLastResponse("");
       setHistory([...newChat, { type: "response", content: r }]);
     });
   };
@@ -61,8 +68,8 @@ function ProvenanceChat({ triggerChat }: ProvenaceChatProps) {
       <ChatTrigger onClick={triggerChat} />
       <ChatContent
         loading={loading}
+        lastResponse={lastResponse}
         history={history}
-        lastResponse={currentResponseRef}
       />
       <ChatInput onSend={sendPrompt} />
     </div>
@@ -98,19 +105,19 @@ function ChatTrigger({ onClick }: ChatTriggerProps) {
 
 interface ChatContentProps {
   readonly history: HistoryMessage[];
-  readonly lastResponse: Ref<HTMLParagraphElement>;
+  readonly lastResponse: string;
   readonly loading: boolean;
 }
 
 function ChatContent({ history, lastResponse, loading }: ChatContentProps) {
-  console.log(loading);
+  console.log("inside loading: ", loading);
   return (
-    <div className="flex flex-col text-md overflow-y-auto customscrollbar p-3 gap-2 w-full h-[85%] bg-chat-400 rounded-md">
+    <div className="flex flex-col text-sm overflow-y-auto customscrollbar p-3 gap-2 w-full h-[85%] bg-chat-400 rounded-md">
       {history.map((msg) => (
         <div
-          key={msg.content.slice(0, 20)}
+          key={uuid()}
           className={cn(
-            "flex flex-col w-full",
+            "flex flex-col w-fit",
             msg.type === "request"
               ? "rounded-2xl bg-slate-300 self-end p-3"
               : "justify-start text-white p-2"
@@ -119,11 +126,9 @@ function ChatContent({ history, lastResponse, loading }: ChatContentProps) {
           <Markdown>{msg.content}</Markdown>
         </div>
       ))}
-      <p
-        ref={lastResponse}
-        className="flex flex-col w-fit justify-start text-white p-2"
-      >
+      <p className="flex flex-col w-fit justify-start text-white p-2">
         {loading && "thinking..."}
+        {lastResponse && <Markdown>{lastResponse}</Markdown>}
       </p>
     </div>
   );
