@@ -6,6 +6,6 @@ export const Api = {
 };
 
 export const LLMApi = {
-  baseURL: import.meta.env.VITE_LLM_URL ?? "https://mcp.ai4eosc-dev.predictia.es",
+  baseURL: import.meta.env.VITE_LLM_URL ?? "https://mcp.ai4eosc.predictia.es",
   chat: "/gemini/chat",
 };
