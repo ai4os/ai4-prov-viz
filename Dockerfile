@@ -6,6 +6,6 @@ COPY . .
 RUN npm run build
 
 
-FROM registry.services.ai4os.eu/ai4os/prov-api:latest
+FROM registry.cloud.ai4eosc.eu/ai4os/prov-api:latest
 COPY --from=frontbuilder /app/dist /frontend
 ENV SPRING_WEB_RESOURCES_STATIC_LOCATIONS=file:/frontend,file:/resources
