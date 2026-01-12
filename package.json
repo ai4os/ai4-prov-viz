@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "local": "VITE_BACKEND_URL='http://localhost:8080' VITE_LLM_URL='http://localhost:8000' vite",
-    "localllm": "VITE_BACKEND_URL='https://provenance.services.ai4os.eu' VITE_LLM_URL='http://localhost:8000' vite",
-    "dev": "VITE_BACKEND_URL='https://provenance.services.ai4os.eu' VITE_LLM_URL='TBD' vite",
+    "localllm": "VITE_BACKEND_URL='https://provenance.cloud.ai4eosc.eu' VITE_LLM_URL='http://localhost:8000' vite",
+    "dev": "VITE_BACKEND_URL='https://provenance.cloud.ai4eosc.eu' VITE_LLM_URL='TBD' vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
